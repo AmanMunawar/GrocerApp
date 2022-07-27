@@ -16,44 +16,42 @@ import java.io.BufferedReader;
 @Component
 public class OpenMapStreetHelper {
 
-	public AddressSubDetails getLatLongPositions(GrocerStoreInformation grocerStoreInformation) throws Exception {
-		int responseCode = 0;
+    public AddressSubDetails getLatLongPositions(GrocerStoreInformation grocerStoreInformation) throws Exception {
+        int responseCode = 0;
 
-		String address = grocerStoreInformation.getShopNo() + "+" + grocerStoreInformation.getStreetNumber() + "+"
-				+ grocerStoreInformation.getGrocerStoreName() 
-				+ "+" + grocerStoreInformation.getCounty();
+        String address = grocerStoreInformation.getFullAddress();
+        System.out.println(address);
+
+        address = address.replaceAll(" " , "+");
+        String api = "https://nominatim.openstreetmap.org/search?q=" + address
+                + "&format=json&polygon=1&addressdetails=1";
 
 
+        URL url = new URL(api);
+        HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+        httpConnection.connect();
+        responseCode = httpConnection.getResponseCode();
 
-		String api = "https://nominatim.openstreetmap.org/search?q=" + address
-				+ "&format=json&polygon=1&addressdetails=1";
-		
-		
-		URL url = new URL(api);
-		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-		httpConnection.connect();
-		responseCode = httpConnection.getResponseCode();
+        if (responseCode == 200) {
 
-		if (responseCode == 200) {
+            InputStream stream = httpConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
 
-			InputStream stream = httpConnection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			StringBuilder result = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				result.append(line);
-			}
+            ObjectMapper objectMapper = new ObjectMapper();
+            AddressSubDetails[] addressSubDetails = objectMapper.readValue(result.toString(),
+                    AddressSubDetails[].class);
 
-			ObjectMapper objectMapper = new ObjectMapper();
-			AddressSubDetails[] addressSubDetails = objectMapper.readValue(result.toString(),
-					AddressSubDetails[].class);
-			
-			if (addressSubDetails.length > 0) {
-				return addressSubDetails[0];
-			}
+            if (addressSubDetails.length > 0) {
+                return addressSubDetails[0];
+            }
 
-		}
-		return null;
+        }
+        return null;
 
-	}
+    }
 }
