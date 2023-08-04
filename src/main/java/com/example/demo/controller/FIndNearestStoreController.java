@@ -16,46 +16,46 @@ public class FIndNearestStoreController {
     @Autowired
     private GrocerStoreInformationDao grocerStoreInformationDao;
 
-    //later would come a
-    @GetMapping("/findnearestgrocerstore")
-    public ResponseEntity findNearestGrocerStore(@RequestBody LanAndLon lanAndLon) {
+    // //later would come a
+    // @GetMapping("/findnearestgrocerstore")
+    // public ResponseEntity findNearestGrocerStore(@RequestBody LanAndLon lanAndLon) {
 
 
-        List<GrocerStoreInformation> grocerStoreInfoList = grocerStoreInformationDao.findAll();
+    //     List<GrocerStoreInformation> grocerStoreInfoList = grocerStoreInformationDao.findAll();
 
-        GrocerStoreInformation grocerStoreInformation = findTheNearestStore(grocerStoreInfoList, lanAndLon);
+    //     GrocerStoreInformation grocerStoreInformation = findTheNearestStore(grocerStoreInfoList, lanAndLon);
 
-        return ResponseEntity.status(HttpStatus.OK).body(grocerStoreInformation);
-    }
+    //     return ResponseEntity.status(HttpStatus.OK).body(grocerStoreInformation);
+    // }
 
-    private GrocerStoreInformation findTheNearestStore(List<GrocerStoreInformation> grocerStoreInfoList,
-                                                       LanAndLon customerLatAndLon) {
+    // private GrocerStoreInformation findTheNearestStore(List<GrocerStoreInformation> grocerStoreInfoList,
+    //                                                    LanAndLon customerLatAndLon) {
 
-        Double customerLat = Double.parseDouble(customerLatAndLon.getLat());
-        Double customerLon = Double.parseDouble(customerLatAndLon.getLon());
-        GrocerStoreInformation grocerStoreInformationToReturn = new GrocerStoreInformation();
+    //     Double customerLat = Double.parseDouble(customerLatAndLon.getLat());
+    //     Double customerLon = Double.parseDouble(customerLatAndLon.getLon());
+    //     GrocerStoreInformation grocerStoreInformationToReturn = new GrocerStoreInformation();
 
-        double minimumDistance = 0.0;
-        Boolean flag = false;
+    //     double minimumDistance = 0.0;
+    //     Boolean flag = false;
 
-        for (GrocerStoreInformation grocerStoreInformation : grocerStoreInfoList) {
+    //     for (GrocerStoreInformation grocerStoreInformation : grocerStoreInfoList) {
 
-            double dist = org.apache.lucene.util.SloppyMath.haversinMeters(customerLat,
-                    customerLon,
-                    Double.parseDouble(grocerStoreInformation.getLat()),
-                    Double.parseDouble(grocerStoreInformation.getLon()));
+    //         double dist = org.apache.lucene.util.SloppyMath.haversinMeters(customerLat,
+    //                 customerLon,
+    //                 Double.parseDouble(grocerStoreInformation.getLat()),
+    //                 Double.parseDouble(grocerStoreInformation.getLon()));
 
-            if (!flag) {
-                minimumDistance = dist;
-                grocerStoreInformationToReturn = grocerStoreInformation;
-                flag = true;
-            } else if (minimumDistance > dist) {
-                minimumDistance = dist;
-                grocerStoreInformationToReturn = grocerStoreInformation;
-            }
-        }
+    //         if (!flag) {
+    //             minimumDistance = dist;
+    //             grocerStoreInformationToReturn = grocerStoreInformation;
+    //             flag = true;
+    //         } else if (minimumDistance > dist) {
+    //             minimumDistance = dist;
+    //             grocerStoreInformationToReturn = grocerStoreInformation;
+    //         }
+    //     }
 
 
-        return grocerStoreInformationToReturn;
-    }
+    //     return grocerStoreInformationToReturn;
+    // }
 }
