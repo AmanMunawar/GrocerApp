@@ -34,6 +34,7 @@ public class GrocerStoreAddressInformationController {
     public GrocerStoreInformation getGrocerStoreInformation(@PathVariable String grocerStoreID) {
 //		I will add
 //		I also have to add this function in service layer and DAO layer
+        print("hello world")
         return null;
     }
 
