@@ -14,7 +14,7 @@ import java.util.List;
 public class FIndNearestStoreController {
 
     @Autowired
-    private GrocerStoreInformationDao grocerStoreInrmationDao;
+    private GrocerStoreInformationDao grocerStoreInformation;
 
     // //later would come a
     // @GetMapping("/findnearestgrocerstore")
